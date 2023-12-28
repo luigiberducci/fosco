@@ -1,1 +1,1 @@
-# cegis_cbf
+# Counter-Example Guided Inductive Synthesis of Control Barrier Functions 
