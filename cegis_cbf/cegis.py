@@ -5,19 +5,25 @@ from dataclasses import dataclass, replace
 from typing import Any, Type
 
 import matplotlib.pyplot as plt
-import torch
 
 from cegis_cbf.cbf import ControlBarrierFunction
 from cegis_cbf.common.formatter import CustomFormatter
 from cegis_cbf.common.plotting import benchmark_3d
-from cegis_cbf.consolidator import Consolidator, make_consolidator
-from cegis_cbf.common.consts import CertificateType, TimeDomain, ActivationType, VerifierType, DomainNames
+from cegis_cbf.consolidator import make_consolidator
+from cegis_cbf.common.consts import (
+    CertificateType,
+    TimeDomain,
+    ActivationType,
+    VerifierType,
+)
 from cegis_cbf.learner import make_learner, LearnerNN
 from cegis_cbf.translator import make_translator
 from cegis_cbf.verifier import make_verifier
 from systems import ControlAffineControllableDynamicalModel
 
 CegisResult = namedtuple("CegisResult", ["found", "net", "infos"])
+
+DEBUG_PLOT = False
 
 
 @dataclass
@@ -83,8 +89,6 @@ class Cegis:
 
         return logger
 
-
-
     def _initialise_learner(self) -> LearnerNN:
         learner_type = make_learner(self.config.TIME_DOMAIN)
         learner_instance = learner_type(
@@ -100,8 +104,7 @@ class Cegis:
     def _initialise_verifier(self):
         verifier_type = make_verifier(self.config.VERIFIER)
         verifier_instance = verifier_type(
-            solver_vars=self.x,
-            constraints_method=self.certificate.get_constraints
+            solver_vars=self.x, constraints_method=self.certificate.get_constraints
         )
         return verifier_instance
 
@@ -116,7 +119,8 @@ class Cegis:
 
         # create domains
         domains = {
-            label: domain.generate_domain(x) for label, domain in self.config.DOMAINS.items()
+            label: domain.generate_domain(x)
+            for label, domain in self.config.DOMAINS.items()
         }
 
         self.logger.debug("Domains: {}".format(domains))
@@ -131,7 +135,6 @@ class Cegis:
     def _initialise_certificate(self):
         certificate_type = ControlBarrierFunction
         return certificate_type(vars=self.x, domains=self.config.DOMAINS)
-
 
     def _initialise_consolidator(self):
         return make_consolidator()
@@ -151,11 +154,20 @@ class Cegis:
             self.logger.debug(f"Iteration {iter}")
 
             # debug print
-            domains = self.config.DOMAINS
-            xrange = domains["lie"].lower_bounds[0], domains["lie"].upper_bounds[0]
-            yrange = domains["lie"].lower_bounds[1], domains["lie"].upper_bounds[1]
-            ax2 = benchmark_3d(self.learner, domains, [0.0], xrange, yrange, title=f"CBF - Iter {iter}")
-            plt.show()
+            if DEBUG_PLOT:
+                plt.clf()
+                domains = self.config.DOMAINS
+                xrange = domains["lie"].lower_bounds[0], domains["lie"].upper_bounds[0]
+                yrange = domains["lie"].lower_bounds[1], domains["lie"].upper_bounds[1]
+                ax2 = benchmark_3d(
+                    self.learner,
+                    domains,
+                    [0.0],
+                    xrange,
+                    yrange,
+                    title=f"CBF - Iter {iter}",
+                )
+                plt.show()
 
             # Learner component
             self.logger.debug("Learner")
@@ -184,7 +196,9 @@ class Cegis:
         # state = self.process_timers(state)
 
         infos = {"iter": iter}
-        self._result = CegisResult(found=state["found"], net=state["V_net"], infos=infos)
+        self._result = CegisResult(
+            found=state["found"], net=state["V_net"], infos=infos
+        )
 
         return self._result
 
@@ -201,13 +215,11 @@ class Cegis:
             "Vdot_symbolic": None,
             "xdot": self.xdot,
             "cex": None,
-
             # CegisStateKeys.found: False,
             # CegisStateKeys.verification_timed_out: False,
             # CegisStateKeys.cex: None,
             # CegisStateKeys.trajectory: None,
             # CegisStateKeys.ENet: self.config.ENET,
-
         }
 
         return state
@@ -219,5 +231,7 @@ class Cegis:
     def _assert_state(self):
         assert self.config.LEARNING_RATE > 0
         assert self.config.CEGIS_MAX_ITERS > 0
-        assert self.x is self.verifier.xs, "expected same variables in cegis_cbf and verifier"
+        assert (
+            self.x is self.verifier.xs
+        ), "expected same variables in cegis_cbf and verifier"
         self.certificate._assert_state(self.domains, self.datasets)

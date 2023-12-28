@@ -24,8 +24,8 @@ class TestVerifier(unittest.TestCase):
 
         C = vars[0] + 1.0
         dC = vars[0] + 6.0
-        results = verifier.verify(V_symbolic=C, dC=dC)
-        results2 = verifier2.verify(V_symbolic=C, dC=dC)
+        results = verifier.verify(V_symbolic=C, Vdot_symbolic=dC)
+        results2 = verifier2.verify(V_symbolic=C, Vdot_symbolic=dC)
 
         self.assertTrue(len(results["cex"]["sat"]) > 0, "expected counterexample for any x > -1, got none")
         self.assertTrue(len(results2["cex"]["unsat"]) == 0, f"expected no counterexample, got {results2['cex']['unsat']}")

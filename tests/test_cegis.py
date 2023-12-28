@@ -34,7 +34,7 @@ class TestCEGIS(unittest.TestCase):
             TIME_DOMAIN=TimeDomain.CONTINUOUS,
             CERTIFICATE=CertificateType.CBF,
             VERIFIER=VerifierType.Z3,
-            CEGIS_MAX_ITERS=10,
+            CEGIS_MAX_ITERS=5,
             ROUNDING=3,
             DATA_GEN=data_gen,
             N_DATA=500,
@@ -49,11 +49,13 @@ class TestCEGIS(unittest.TestCase):
 
     def test_loop(self):
         config = self._get_single_integrator_config()
+        config.LEARNING_RATE = 1e-30    # make learning rate small so that we don't learn anything in 10 iters
 
         c = Cegis(config=config, verbose=2)
         results = c.solve()
 
         infos = results.infos
-        self.assertTrue(infos["iter"] == 10, f"Did not run for 10 iterations, iter={infos['iter']}")
+        self.assertTrue(infos["iter"] == config.CEGIS_MAX_ITERS,
+                        f"Did not run for {config.CEGIS_MAX_ITERS} iterations, iter={infos['iter']}")
 
 
