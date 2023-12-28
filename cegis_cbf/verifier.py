@@ -25,7 +25,9 @@ FUNCTIONS = {
 
 
 class Verifier:
-    def __init__(self, constraints_method: Callable[[], Generator], solver_vars: Iterable[SYMBOL]):
+    def __init__(
+        self, constraints_method: Callable[[], Generator], solver_vars: Iterable[SYMBOL]
+    ):
         super().__init__()
         self.xs = solver_vars
         self.n = len(solver_vars)
@@ -124,11 +126,17 @@ class Verifier:
             for index, o in enumerate(results.items()):
                 label, res = o
                 if self.is_sat(res):
-                    original_point = self.compute_model(vars=solver_vars[label], solver=solvers[label], res=res)
+                    original_point = self.compute_model(
+                        vars=solver_vars[label], solver=solvers[label], res=res
+                    )
                     logging.info(f"{label}: Counterexample Found: {original_point}")
 
-                    V_ctx = self.replace_point(V_symbolic, solver_vars[label], original_point.numpy().T)
-                    Vdot_ctx = self.replace_point(Vdot_symbolic, solver_vars[label], original_point.numpy().T)
+                    V_ctx = self.replace_point(
+                        V_symbolic, solver_vars[label], original_point.numpy().T
+                    )
+                    Vdot_ctx = self.replace_point(
+                        Vdot_symbolic, solver_vars[label], original_point.numpy().T
+                    )
                     logging.info("\nV_ctx: {} ".format(V_ctx))
                     logging.info("\nVdot_ctx: {} ".format(Vdot_ctx))
 
@@ -258,6 +266,7 @@ class VerifierZ3(Verifier):
 
     def solver_fncts(self):
         return FUNCTIONS
+
 
 def make_verifier(type: VerifierType) -> Type[VerifierZ3]:
     if type == VerifierType.Z3:

@@ -69,7 +69,7 @@ def n_dim_sphere_init_data(centre, radius, batch_size, on_border=False):
     u = torch.randn(
         batch_size, dim
     )  # an array of d normally distributed random variables
-    norm = torch.sum(u ** 2, dim=1) ** (0.5)
+    norm = torch.sum(u**2, dim=1) ** (0.5)
     if on_border:
         r = radius * torch.ones(batch_size, dim) ** (1.0 / dim)
     else:
@@ -107,6 +107,7 @@ def circle_init_data(centre, r, batch_size, on_border=False):
 
     return torch.tensor(centre) + offset
 
+
 def square_init_data(domain, batch_size, on_border=False):
     """
     :param domain: list = [lower_bounds, upper_bounds]
@@ -120,6 +121,9 @@ def square_init_data(domain, batch_size, on_border=False):
     square_uniform = (r1 - r2) * torch.rand(batch_size, len(domain[0])) + r2
     return square_uniform
 
+
 def _set_assertion(required: object, actual: object, name: object) -> object:
-    assert required == actual, f"Required {name} {required} do not match actual domains {actual}. " \
-                               f"Missing: {required - actual}, Not required: {actual - required}"
+    assert required == actual, (
+        f"Required {name} {required} do not match actual domains {actual}. "
+        f"Missing: {required - actual}, Not required: {actual - required}"
+    )

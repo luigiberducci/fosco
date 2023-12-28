@@ -19,7 +19,9 @@ class SingleIntegrator(ControlAffineControllableDynamicalModel):
         return 2
 
     def fx_torch(self, x: np.ndarray | torch.Tensor) -> np.ndarray | torch.Tensor:
-        assert len(x.shape) == 3, "expected batched input with shape (batch_size, state_dim, 1)"
+        assert (
+            len(x.shape) == 3
+        ), "expected batched input with shape (batch_size, state_dim, 1)"
         if isinstance(x, np.ndarray):
             fx = np.zeros_like(x)
         else:
@@ -27,11 +29,15 @@ class SingleIntegrator(ControlAffineControllableDynamicalModel):
         return fx
 
     def fx_smt(self, x: list) -> np.ndarray | torch.Tensor:
-        assert isinstance(x, list), "expected list of symbolic state variables, [x0, x1, ...]"
+        assert isinstance(
+            x, list
+        ), "expected list of symbolic state variables, [x0, x1, ...]"
         return np.zeros(len(x))
 
     def gx_torch(self, x: np.ndarray | torch.Tensor) -> np.ndarray | torch.Tensor:
-        assert len(x.shape) == 3, "expected batched input with shape (batch_size, state_dim, 1)"
+        assert (
+            len(x.shape) == 3
+        ), "expected batched input with shape (batch_size, state_dim, 1)"
         if isinstance(x, np.ndarray):
             gx = np.eye(x.shape[1])[None].repeat(x.shape[0], axis=0)
         else:
@@ -39,5 +45,7 @@ class SingleIntegrator(ControlAffineControllableDynamicalModel):
         return gx
 
     def gx_smt(self, x: list) -> np.ndarray | torch.Tensor:
-        assert isinstance(x, list), "expected list of symbolic state variables, [x0, x1, ...]"
+        assert isinstance(
+            x, list
+        ), "expected list of symbolic state variables, [x0, x1, ...]"
         return np.eye(len(x))

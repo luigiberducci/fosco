@@ -31,7 +31,9 @@ class ControlBarrierFunction:
     """
 
     def __init__(self, vars: list, domains: dict[str, Set]) -> None:
-        self.x_vars = [v for v in vars if str(v).startswith("x")]   # todo: dont like checking initial letter
+        self.x_vars = [
+            v for v in vars if str(v).startswith("x")
+        ]  # todo: dont like checking initial letter
         self.u_vars = [v for v in vars if str(v).startswith("u")]
 
         self.x_domain: SYMBOL = domains[XD].generate_domain(self.x_vars)
@@ -40,7 +42,9 @@ class ControlBarrierFunction:
         self.initial_domain: SYMBOL = domains[XI].generate_domain(self.x_vars)
         self.unsafe_domain: SYMBOL = domains[XU].generate_domain(self.x_vars)
 
-        assert isinstance(self.u_set, Rectangle), f"CBF only works with rectangular input domains, got {self.u_set}"
+        assert isinstance(
+            self.u_set, Rectangle
+        ), f"CBF only works with rectangular input domains, got {self.u_set}"
         self.n_vars = len(self.x_vars)
         self.n_controls = len(self.u_vars)
 
@@ -50,15 +54,13 @@ class ControlBarrierFunction:
         self.margin = 0.0
         self.epochs = 1000
 
-
-
     def compute_loss(
-            self,
-            B_i: torch.Tensor,
-            B_u: torch.Tensor,
-            B_d: torch.Tensor,
-            Bdot_d: torch.Tensor,
-            alpha: torch.Tensor | float,
+        self,
+        B_i: torch.Tensor,
+        B_u: torch.Tensor,
+        B_d: torch.Tensor,
+        Bdot_d: torch.Tensor,
+        alpha: torch.Tensor | float,
     ) -> tuple[torch.Tensor, dict]:
         """Computes loss function for CBF and its accuracy w.r.t. the batch of data.
 
@@ -72,7 +74,9 @@ class ControlBarrierFunction:
         Returns:
             tuple[torch.Tensor, float]: loss and accuracy
         """
-        assert Bdot_d is None or B_d.shape == Bdot_d.shape, f"B_d and Bdot_d must have the same shape, got {B_d.shape} and {Bdot_d.shape}"
+        assert (
+            Bdot_d is None or B_d.shape == Bdot_d.shape
+        ), f"B_d and Bdot_d must have the same shape, got {B_d.shape} and {Bdot_d.shape}"
         margin = self.margin
 
         accuracy_i = (B_i >= margin).count_nonzero().item()
@@ -92,7 +96,9 @@ class ControlBarrierFunction:
         if Bdot_d is None:
             lie_loss = 0.0
         else:
-            lie_loss = (relu(margin - (Bdot_d + alpha * B_d))).mean()  # penalize dB_d + alpha * B_d < 0
+            lie_loss = (
+                relu(margin - (Bdot_d + alpha * B_d))
+            ).mean()  # penalize dB_d + alpha * B_d < 0
 
         loss = init_loss + unsafe_loss + lie_loss
 
@@ -108,11 +114,11 @@ class ControlBarrierFunction:
         return loss, accuracy
 
     def learn(
-            self,
-            learner: LearnerCT,
-            optimizer: Optimizer,
-            datasets: dict,
-            f_torch: callable,
+        self,
+        learner: LearnerCT,
+        optimizer: Optimizer,
+        datasets: dict,
+        f_torch: callable,
     ) -> dict:
         """
         Updates the CBF model.
@@ -128,8 +134,10 @@ class ControlBarrierFunction:
         i2 = datasets[XI].shape[0]
         # samples = torch.cat([s for s in S.values()])
         label_order = [XD, XI, XU]
-        state_samples = torch.cat([datasets[label][:, :self.n_vars] for label in label_order])
-        U_d = datasets[XD][:, self.n_vars:self.n_vars + self.n_controls]
+        state_samples = torch.cat(
+            [datasets[label][:, : self.n_vars] for label in label_order]
+        )
+        U_d = datasets[XD][:, self.n_vars : self.n_vars + self.n_controls]
 
         for t in range(self.epochs):
             optimizer.zero_grad()
@@ -138,12 +146,13 @@ class ControlBarrierFunction:
             B, gradB = learner.compute_net_gradnet(state_samples)
 
             B_d = B[:i1, 0]
-            B_i = B[i1: i1 + i2, 0]
-            B_u = B[i1 + i2:, 0]
+            B_i = B[i1 : i1 + i2, 0]
+            B_u = B[i1 + i2 :, 0]
 
             # compute lie derivative
-            assert B_d.shape[0] == U_d.shape[
-                0], f"expected pairs of state,input data. Got {B_d.shape[0]} and {U_d.shape[0]}"
+            assert (
+                B_d.shape[0] == U_d.shape[0]
+            ), f"expected pairs of state,input data. Got {B_d.shape[0]} and {U_d.shape[0]}"
             X_d = state_samples[:i1]
             gradB_d = gradB[:i1]
             Sdot_d = f_torch(X_d, U_d)
@@ -152,7 +161,7 @@ class ControlBarrierFunction:
             loss, accuracy = self.compute_loss(B_i, B_u, B_d, Bdot_d, alpha=1.0)
 
             if t % math.ceil(self.epochs / 10) == 0 or self.epochs - t < 10:
-                #log_loss_acc(t, loss, accuracy, learner.verbose)
+                # log_loss_acc(t, loss, accuracy, learner.verbose)
                 logging.debug(f"Epoch {t}: loss={loss}, accuracy={accuracy}")
 
             # early stopping after 2 consecutive epochs with ~100% accuracy
@@ -191,7 +200,9 @@ class ControlBarrierFunction:
         lie_constr = _True
         for u_vert in u_vertices:
             vertex_constr = Bdot + alpha(B) < 0
-            vertex_assignment = _And([u_var == u_val for u_var, u_val in zip(self.u_vars, u_vert)])
+            vertex_assignment = _And(
+                [u_var == u_val for u_var, u_val in zip(self.u_vars, u_vert)]
+            )
             lie_constr_uv = _And(vertex_constr, vertex_assignment)
             lie_constr = _And(lie_constr, lie_constr_uv)
 
@@ -213,8 +224,8 @@ class ControlBarrierFunction:
         logging.debug(f"unsafe_constr: {unsafe_constr}")
 
         for cs in (
-                {XI: (inital_constr, self.x_vars), XU: (unsafe_constr, self.x_vars)},
-                {XD: (lie_constr, self.x_vars + self.u_vars)},
+            {XI: (inital_constr, self.x_vars), XU: (unsafe_constr, self.x_vars)},
+            {XD: (lie_constr, self.x_vars + self.u_vars)},
         ):
             yield cs
 
@@ -223,5 +234,11 @@ class ControlBarrierFunction:
         dn = DomainNames
         domain_labels = set(domains.keys())
         data_labels = set(data.keys())
-        _set_assertion({dn.XD.value, dn.UD.value, dn.XI.value, dn.XU.value}, domain_labels, "Symbolic Domains")
-        _set_assertion({dn.XD.value, dn.XI.value, dn.XU.value}, data_labels, "Data Sets")
+        _set_assertion(
+            {dn.XD.value, dn.UD.value, dn.XI.value, dn.XU.value},
+            domain_labels,
+            "Symbolic Domains",
+        )
+        _set_assertion(
+            {dn.XD.value, dn.XI.value, dn.XU.value}, data_labels, "Data Sets"
+        )

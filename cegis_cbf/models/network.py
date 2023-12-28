@@ -6,14 +6,16 @@ from cegis_cbf.common.consts import ActivationType
 
 class MLP(nn.Module):
     def __init__(
-            self,
-            input_size: int,
-            hidden_sizes: tuple[int, ...],
-            activation: tuple[ActivationType, ...],
-            output_size: int = 1,
+        self,
+        input_size: int,
+        hidden_sizes: tuple[int, ...],
+        activation: tuple[ActivationType, ...],
+        output_size: int = 1,
     ):
         super(MLP, self).__init__()
-        assert len(hidden_sizes) == len(activation), "hidden sizes and activation must have the same length"
+        assert len(hidden_sizes) == len(
+            activation
+        ), "hidden sizes and activation must have the same length"
 
         self.input_size = input_size
         self.output_size = output_size

@@ -19,7 +19,9 @@ class DoubleIntegrator(ControlAffineControllableDynamicalModel):
         return 2
 
     def fx_torch(self, x: np.ndarray | torch.Tensor) -> np.ndarray | torch.Tensor:
-        assert len(x.shape) == 3, "expected batched input with shape (batch_size, state_dim, 1)"
+        assert (
+            len(x.shape) == 3
+        ), "expected batched input with shape (batch_size, state_dim, 1)"
         if isinstance(x, np.ndarray):
             vx, vy = x[:, 2, :], x[:, 3, :]
             fx = np.concatenate([vx, vy, np.zeros_like(vx), np.zeros_like(vy)], axis=1)
@@ -31,12 +33,16 @@ class DoubleIntegrator(ControlAffineControllableDynamicalModel):
         return fx
 
     def fx_smt(self, x: list) -> np.ndarray | torch.Tensor:
-        assert isinstance(x, list), "expected list of symbolic state variables, [x0, x1, ...]"
+        assert isinstance(
+            x, list
+        ), "expected list of symbolic state variables, [x0, x1, ...]"
         vx, vy = x[2], x[3]
         return np.array([vx, vy, 0, 0])
 
     def gx_torch(self, x: np.ndarray | torch.Tensor) -> np.ndarray | torch.Tensor:
-        assert len(x.shape) == 3, "expected batched input with shape (batch_size, state_dim, 1)"
+        assert (
+            len(x.shape) == 3
+        ), "expected batched input with shape (batch_size, state_dim, 1)"
         if isinstance(x, np.ndarray):
             gx = np.zeros((self.n_vars, self.n_controls))
             gx[2:, :] = np.eye(self.n_controls)
@@ -48,7 +54,9 @@ class DoubleIntegrator(ControlAffineControllableDynamicalModel):
         return gx
 
     def gx_smt(self, x: list) -> np.ndarray | torch.Tensor:
-        assert isinstance(x, list), "expected list of symbolic state variables, [x0, x1, ...]"
+        assert isinstance(
+            x, list
+        ), "expected list of symbolic state variables, [x0, x1, ...]"
         gx = np.zeros((self.n_vars, self.n_controls))
         gx[2:, :] = np.eye(self.n_controls)
         return gx

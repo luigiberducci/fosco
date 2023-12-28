@@ -67,12 +67,14 @@ def certificate_surface(
     )
     return ax
 
+
 def add_legend(ax):
     """Add legend to the axis without duplicate labels."""
     handles, labels = ax.get_legend_handles_labels()
     by_label = dict(zip(labels, handles))
     ax.legend(by_label.values(), by_label.keys(), loc="upper right")
     return ax
+
 
 def get_plot_colour(label):
     if label == "goal":

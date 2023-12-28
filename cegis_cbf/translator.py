@@ -31,7 +31,9 @@ class Translator(ABC):
         raise NotImplementedError
 
     @abstractmethod
-    def get_symbolic_net_grad(self, input_vars: Iterable[SYMBOL], net: MLP) -> Iterable[SYMBOL]:
+    def get_symbolic_net_grad(
+        self, input_vars: Iterable[SYMBOL], net: MLP
+    ) -> Iterable[SYMBOL]:
         """
         Translate the network gradient w.r.t. the input into a symbolic expression.
 
@@ -50,19 +52,28 @@ class MLPZ3Translator(Translator):
     def __init__(self, rounding: int = 3):
         self.round = rounding
 
-    def translate(self, x_v_map: dict[str, Iterable[SYMBOL]], V_net: MLP, xdot: Iterable[SYMBOL], **kwargs):
+    def translate(
+        self,
+        x_v_map: dict[str, Iterable[SYMBOL]],
+        V_net: MLP,
+        xdot: Iterable[SYMBOL],
+        **kwargs,
+    ):
         x_vars = x_v_map["v"]
         xdot = np.array(xdot).reshape(-1, 1)
         V_symbolic, Vdot_symbolic = self.get_symbolic_formula(x_vars, V_net, xdot)
 
-        assert isinstance(V_symbolic, z3.ArithRef), f"Expected V_symbolic to be z3.ArithRef, got {type(V_symbolic)}"
-        assert isinstance(Vdot_symbolic, z3.ArithRef), f"Expected Vdot_symbolic to be z3.ArithRef, got {type(Vdot_symbolic)}"
+        assert isinstance(
+            V_symbolic, z3.ArithRef
+        ), f"Expected V_symbolic to be z3.ArithRef, got {type(V_symbolic)}"
+        assert isinstance(
+            Vdot_symbolic, z3.ArithRef
+        ), f"Expected Vdot_symbolic to be z3.ArithRef, got {type(Vdot_symbolic)}"
 
         return {
             "V_symbolic": V_symbolic,
             "Vdot_symbolic": Vdot_symbolic,
         }
-
 
     def get_symbolic_net(self, input_vars: Iterable[SYMBOL], net: MLP) -> SYMBOL:
         """
@@ -91,7 +102,9 @@ class MLPZ3Translator(Translator):
 
         return V
 
-    def get_symbolic_net_grad(self, input_vars: Iterable[SYMBOL], net: MLP) -> Iterable[SYMBOL]:
+    def get_symbolic_net_grad(
+        self, input_vars: Iterable[SYMBOL], net: MLP
+    ) -> Iterable[SYMBOL]:
         """
         Translate the MLP gradient w.r.t. the input into a symbolic expression.
 
@@ -115,11 +128,17 @@ class MLPZ3Translator(Translator):
 
         assert z.shape == (1, 1)
         assert gradV.shape == (
-            1, net.input_size), f"Wrong shape of gradV, expected (1, {net.input_size}), got {gradV.shape}"
+            1,
+            net.input_size,
+        ), f"Wrong shape of gradV, expected (1, {net.input_size}), got {gradV.shape}"
 
         # z3 simplification
         for i in range(net.input_size):
-            gradV[0, i] = z3.simplify(gradV[0, i]) if isinstance(gradV[0, i], z3.ArithRef) else gradV[0, i]
+            gradV[0, i] = (
+                z3.simplify(gradV[0, i])
+                if isinstance(gradV[0, i], z3.ArithRef)
+                else gradV[0, i]
+            )
 
         return gradV
 
@@ -148,7 +167,9 @@ class MLPZ3Translator(Translator):
 
         assert z.shape == (1, 1)
         assert gradV.shape == (
-            1, net.input_size), f"Wrong shape of gradV, expected (1, {net.input_size}), got {gradV.shape}"
+            1,
+            net.input_size,
+        ), f"Wrong shape of gradV, expected (1, {net.input_size}), got {gradV.shape}"
 
         Vdot = gradV @ xdot
 
@@ -161,7 +182,9 @@ class MLPZ3Translator(Translator):
 
         return V, Vdot
 
-    def network_until_last_layer(self, net: MLP, input_vars: Iterable[SYMBOL]) -> tuple[np.ndarray, np.ndarray]:
+    def network_until_last_layer(
+        self, net: MLP, input_vars: Iterable[SYMBOL]
+    ) -> tuple[np.ndarray, np.ndarray]:
         """
         Symbolic forward pass excluding the last layer.
 
@@ -195,11 +218,15 @@ class MLPZ3Translator(Translator):
         return z, jacobian
 
 
-def make_translator(verifier_type: VerifierType, time_domain: TimeDomain, **kwargs) -> Translator:
+def make_translator(
+    verifier_type: VerifierType, time_domain: TimeDomain, **kwargs
+) -> Translator:
     """
     Factory function for translators.
     """
     if verifier_type == VerifierType.Z3 and time_domain == TimeDomain.CONTINUOUS:
         return MLPZ3Translator(**kwargs)
     else:
-        raise NotImplementedError(f"Translator for verifier={verifier_type} and time={time_domain} not implemented")
+        raise NotImplementedError(
+            f"Translator for verifier={verifier_type} and time={time_domain} not implemented"
+        )

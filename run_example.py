@@ -30,18 +30,26 @@ def main():
         XD = domains.Rectangle(vars=["x0", "x1"], lb=(-5.0, -5.0), ub=(5.0, 5.0))
         UD = domains.Rectangle(vars=["u0", "u1"], lb=(-5.0, -5.0), ub=(5.0, 5.0))
         XI = domains.Rectangle(vars=["x0", "x1"], lb=(-5.0, -5.0), ub=(-4.0, -4.0))
-        XU = domains.Sphere(vars=["x0", "x1"], centre=[0.0, 0.0], radius=1.0, dim_select=[0, 1])
+        XU = domains.Sphere(
+            vars=["x0", "x1"], centre=[0.0, 0.0], radius=1.0, dim_select=[0, 1]
+        )
     elif system_name == "double_integrator":
-        XD = domains.Rectangle(vars=["x0", "x1", "x2", "x3"],
-                                      lb=(-5.0, -5.0, -5.0, -5.0),
-                                      ub=(5.0, 5.0, 5.0, 5.0))
+        XD = domains.Rectangle(
+            vars=["x0", "x1", "x2", "x3"],
+            lb=(-5.0, -5.0, -5.0, -5.0),
+            ub=(5.0, 5.0, 5.0, 5.0),
+        )
         UD = domains.Rectangle(vars=["u0", "u1"], lb=(-5.0, -5.0), ub=(5.0, 5.0))
-        XI = domains.Rectangle(vars=["x0", "x1", "x2", "x3"],
-                                      lb=(-5.0, -5.0, -5.0, -5.0),
-                                      ub=(-4.0, -4.0, 5.0, 5.0))
-        XU = domains.Rectangle(vars=["x0", "x1", "x2", "x3"],
-                                      lb=(-1.0, -1.0, -5.0, -5.0),
-                                      ub=(1.0, 1.0, 5.0, 5.0))
+        XI = domains.Rectangle(
+            vars=["x0", "x1", "x2", "x3"],
+            lb=(-5.0, -5.0, -5.0, -5.0),
+            ub=(-4.0, -4.0, 5.0, 5.0),
+        )
+        XU = domains.Rectangle(
+            vars=["x0", "x1", "x2", "x3"],
+            lb=(-1.0, -1.0, -5.0, -5.0),
+            ub=(1.0, 1.0, 5.0, 5.0),
+        )
     else:
         raise NotImplementedError(f"System {system_name} not implemented")
 
@@ -57,7 +65,9 @@ def main():
         "unsafe": XU,
     }
     data_gen = {
-        "lie": lambda n: torch.concatenate([XD.generate_data(n), UD.generate_data(n)], dim=1),
+        "lie": lambda n: torch.concatenate(
+            [XD.generate_data(n), UD.generate_data(n)], dim=1
+        ),
         "init": lambda n: XI.generate_data(n),
         "unsafe": lambda n: XU.generate_data(n),
     }
@@ -85,9 +95,11 @@ def main():
         xrange = (XD.lower_bounds[0], XD.upper_bounds[0])
         yrange = (XD.lower_bounds[1], XD.upper_bounds[1])
 
-        #ax1 = benchmark_plane(closed_loop_model, [result.cert], config.DOMAINS, levels, xrange, yrange)
-        ax2 = benchmark_3d(result.net, config.DOMAINS, [0.0], xrange, yrange, title="CBF")
-        #ax3 = benchmark_lie(closed_loop_model, [result.cert], config.DOMAINS, levels, xrange, yrange)
+        # ax1 = benchmark_plane(closed_loop_model, [result.cert], config.DOMAINS, levels, xrange, yrange)
+        ax2 = benchmark_3d(
+            result.net, config.DOMAINS, [0.0], xrange, yrange, title="CBF"
+        )
+        # ax3 = benchmark_lie(closed_loop_model, [result.cert], config.DOMAINS, levels, xrange, yrange)
 
         plt.savefig(f"cbf_final.png", dpi=300)
         plt.show()

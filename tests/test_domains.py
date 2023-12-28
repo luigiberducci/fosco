@@ -4,7 +4,6 @@ from cegis_cbf.common import domains
 
 
 class TestDomains(unittest.TestCase):
-
     def test_rectangle(self):
         X = domains.Rectangle(vars=["x", "y"], lb=(-5.0, -5.0), ub=(5.0, 5.0))
         self.assertEqual(X.dimension, 2)

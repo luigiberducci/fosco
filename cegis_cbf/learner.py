@@ -11,17 +11,14 @@ from cegis_cbf.models.network import MLP
 
 
 class LearnerNN(nn.Module):
-
     @abstractmethod
-    def update(
-            self, **kwargs
-    ) -> dict:
+    def update(self, **kwargs) -> dict:
         raise NotImplementedError
 
     def learn(
-            self,
-            datasets: torch.Tensor,
-            xdot_func: Callable,
+        self,
+        datasets: torch.Tensor,
+        xdot_func: Callable,
     ) -> dict:
         return self.learn_method(self, self.optimizer, datasets, xdot_func)
 
@@ -79,13 +76,13 @@ class LearnerCT(LearnerNN):
     """
 
     def __init__(
-            self,
-            input_size,
-            learn_method,
-            hidden_sizes: tuple[int, ...],
-            activation: tuple[ActivationType, ...],
-            lr: float,
-            weight_decay: float,
+        self,
+        input_size,
+        learn_method,
+        hidden_sizes: tuple[int, ...],
+        activation: tuple[ActivationType, ...],
+        lr: float,
+        weight_decay: float,
     ):
         super(LearnerCT, self).__init__()
 
@@ -104,9 +101,7 @@ class LearnerCT(LearnerNN):
 
         self.learn_method = learn_method
 
-    def update(
-            self, datasets, xdot_func, **kwargs
-    ) -> dict:
+    def update(self, datasets, xdot_func, **kwargs) -> dict:
         output = self.learn(datasets=datasets, xdot_func=xdot_func)
         return output
 

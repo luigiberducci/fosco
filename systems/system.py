@@ -38,7 +38,9 @@ class ControlAffineControllableDynamicalModel:
     def gx_smt(self, x) -> np.ndarray | torch.Tensor:
         raise NotImplementedError()
 
-    def f(self, v: np.ndarray | torch.Tensor, u: np.ndarray | torch.Tensor) -> np.ndarray | torch.Tensor:
+    def f(
+        self, v: np.ndarray | torch.Tensor, u: np.ndarray | torch.Tensor
+    ) -> np.ndarray | torch.Tensor:
         if torch.is_tensor(v) or isinstance(v, np.ndarray):
             return self._f_torch(v, u)
         elif contains_object(v, z3.ArithRef):
@@ -53,6 +55,7 @@ class ControlAffineControllableDynamicalModel:
         vdot = self.fx_torch(v) + self.gx_torch(v) @ u
         return vdot.reshape(-1, self.n_vars)
 
-    def __call__(self, v: np.ndarray | torch.Tensor, u: np.ndarray | torch.Tensor) -> np.ndarray | torch.Tensor:
+    def __call__(
+        self, v: np.ndarray | torch.Tensor, u: np.ndarray | torch.Tensor
+    ) -> np.ndarray | torch.Tensor:
         return self.f(v, u)
-

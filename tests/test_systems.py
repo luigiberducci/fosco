@@ -5,10 +5,7 @@ import torch
 import z3
 
 
-
-
 class TestControlAffineDynamicalSystem(unittest.TestCase):
-
     def test_single_integrator(self):
         from systems.single_integrator import SingleIntegrator
 
@@ -38,10 +35,9 @@ class TestControlAffineDynamicalSystem(unittest.TestCase):
 
         xdot = f.f(x, u)
 
-        self.assertTrue(str(xdot[0]) == input_vars[0], "expected xdot = vx, got {xdot[0]}")
-        self.assertTrue(str(xdot[1]) == input_vars[1], "expected ydot = vy, got {xdot[1]}")
-
-
-
-
-
+        self.assertTrue(
+            str(xdot[0]) == input_vars[0], "expected xdot = vx, got {xdot[0]}"
+        )
+        self.assertTrue(
+            str(xdot[1]) == input_vars[1], "expected ydot = vy, got {xdot[1]}"
+        )

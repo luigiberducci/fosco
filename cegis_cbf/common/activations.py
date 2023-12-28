@@ -124,14 +124,14 @@ def relu_square(x):
 def poly3(x):
     # linear - quadratic - cubic activation
     h = int(x.shape[1] / 3)
-    x1, x2, x3 = x[:, :h], x[:, h: 2 * h], x[:, 2 * h:]
+    x1, x2, x3 = x[:, :h], x[:, h : 2 * h], x[:, 2 * h :]
     return torch.cat([x1, torch.pow(x2, 2), torch.pow(x3, 3)], dim=1)
 
 
 def poly4(x):
     # # linear - quadratic - cubic - quartic activation
     h = int(x.shape[1] / 4)
-    x1, x2, x3, x4 = x[:, :h], x[:, h: 2 * h], x[:, 2 * h: 3 * h], x[:, 3 * h:]
+    x1, x2, x3, x4 = x[:, :h], x[:, h : 2 * h], x[:, 2 * h : 3 * h], x[:, 3 * h :]
     return torch.cat([x1, torch.pow(x2, 2), torch.pow(x3, 3), torch.pow(x4, 4)], dim=1)
 
 
@@ -140,10 +140,10 @@ def poly5(x):
     h = int(x.shape[1] / 5)
     x1, x2, x3, x4, x5 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h :],
     )
     return torch.cat(
         [x1, torch.pow(x2, 2), torch.pow(x3, 3), torch.pow(x4, 4), torch.pow(x5, 5)],
@@ -156,11 +156,11 @@ def poly6(x):
     h = int(x.shape[1] / 6)
     x1, x2, x3, x4, x5, x6 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h: 5 * h],
-        x[:, 5 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h : 5 * h],
+        x[:, 5 * h :],
     )
     return torch.cat(
         [
@@ -180,12 +180,12 @@ def poly_7(x):
     h = int(x.shape[1] / 7)
     x1, x2, x3, x4, x5, x6, x7 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h: 5 * h],
-        x[:, 5 * h: 6 * h],
-        x[:, 6 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h : 5 * h],
+        x[:, 5 * h : 6 * h],
+        x[:, 6 * h :],
     )
     return torch.cat(
         [
@@ -206,13 +206,13 @@ def poly_8(x):
     h = int(x.shape[1] / 8)
     x1, x2, x3, x4, x5, x6, x7, x8 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h: 5 * h],
-        x[:, 5 * h: 6 * h],
-        x[:, 6 * h: 7 * h],
-        x[:, 7 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h : 5 * h],
+        x[:, 5 * h : 6 * h],
+        x[:, 6 * h : 7 * h],
+        x[:, 7 * h :],
     )
     return torch.cat(
         [
@@ -245,8 +245,8 @@ def even_poly6(x):
     h = int(x.shape[1] / 3)
     x1, x2, x3 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h :],
     )
     return torch.cat(
         [
@@ -262,9 +262,9 @@ def even_poly8(x):
     h = int(x.shape[1] / 4)
     x1, x2, x3, x4 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h :],
     )
     return torch.cat(
         [
@@ -281,10 +281,10 @@ def even_poly10(x):
     h = int(x.shape[1] / 5)
     x1, x2, x3, x4, x5 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h :],
     )
     return torch.cat(
         [
@@ -370,14 +370,14 @@ def sinh(x):
 def poly3_der(x):
     # linear - quadratic - cubic derivative
     h = int(x.shape[1] / 3)
-    x1, x2, x3 = x[:, :h], x[:, h: 2 * h], x[:, 2 * h:]
+    x1, x2, x3 = x[:, :h], x[:, h : 2 * h], x[:, 2 * h :]
     return torch.cat((torch.ones(x1.shape), 2 * x2, 3 * torch.pow(x3, 2)), dim=1)
 
 
 def poly4_der(x):
     # # linear - quadratic - cubic - quartic derivative
     h = int(x.shape[1] / 4)
-    x1, x2, x3, x4 = x[:, :h], x[:, h: 2 * h], x[:, 2 * h: 3 * h], x[:, 3 * h:]
+    x1, x2, x3, x4 = x[:, :h], x[:, h : 2 * h], x[:, 2 * h : 3 * h], x[:, 3 * h :]
     return torch.cat(
         (torch.ones(x1.shape), 2 * x2, 3 * torch.pow(x3, 2), 4 * torch.pow(x4, 3)),
         dim=1,
@@ -389,10 +389,10 @@ def poly5_der(x):
     h = int(x.shape[1] / 5)
     x1, x2, x3, x4, x5 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h :],
     )
     return torch.cat(
         (
@@ -411,11 +411,11 @@ def poly_6_der(x):
     h = int(x.shape[1] / 6)
     x1, x2, x3, x4, x5, x6 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h: 5 * h],
-        x[:, 5 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h : 5 * h],
+        x[:, 5 * h :],
     )
     return torch.cat(
         (
@@ -435,12 +435,12 @@ def poly7_der(x):
     h = int(x.shape[1] / 7)
     x1, x2, x3, x4, x5, x6, x7 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h: 5 * h],
-        x[:, 5 * h: 6 * h],
-        x[:, 6 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h : 5 * h],
+        x[:, 5 * h : 6 * h],
+        x[:, 6 * h :],
     )
     return torch.cat(
         (
@@ -461,13 +461,13 @@ def poly8_der(x):
     h = int(x.shape[1] / 8)
     x1, x2, x3, x4, x5, x6, x7, x8 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h: 5 * h],
-        x[:, 5 * h: 6 * h],
-        x[:, 6 * h: 7 * h],
-        x[:, 7 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h : 5 * h],
+        x[:, 5 * h : 6 * h],
+        x[:, 6 * h : 7 * h],
+        x[:, 7 * h :],
     )
     return torch.cat(
         (
@@ -503,8 +503,8 @@ def even_poly6_der(x):
     h = int(x.shape[1] / 3)
     x1, x2, x3 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h :],
     )
     return torch.cat(
         [
@@ -520,9 +520,9 @@ def even_poly8_der(x):
     h = int(x.shape[1] / 4)
     x1, x2, x3, x4 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h :],
     )
     return torch.cat(
         [
@@ -539,10 +539,10 @@ def even_poly10_der(x):
     h = int(x.shape[1] / 5)
     x1, x2, x3, x4, x5 = (
         x[:, :h],
-        x[:, h: 2 * h],
-        x[:, 2 * h: 3 * h],
-        x[:, 3 * h: 4 * h],
-        x[:, 4 * h:],
+        x[:, h : 2 * h],
+        x[:, 2 * h : 3 * h],
+        x[:, 3 * h : 4 * h],
+        x[:, 4 * h :],
     )
     return torch.cat(
         [

@@ -13,19 +13,23 @@ class CertificateType(Enum):
 
     @classmethod
     def get_certificate_sets(
-            cls, certificate_type
+        cls, certificate_type
     ) -> tuple[list[DomainNames], list[DomainNames]]:
         dn = DomainNames
         if certificate_type == CertificateType.CBF:
             domains = [dn.XD, dn.UD, dn.XI, dn.XU]
             data = [dn.XD, dn.UD, dn.XI, dn.XU]
         else:
-            raise NotImplementedError(f"Certificate type {certificate_type} not implemented")
+            raise NotImplementedError(
+                f"Certificate type {certificate_type} not implemented"
+            )
         return domains, data
+
 
 class TimeDomain(Enum):
     CONTINUOUS = auto()
     DISCRETE = auto()
+
 
 class ActivationType(Enum):
     IDENTITY = auto()
@@ -46,6 +50,7 @@ class ActivationType(Enum):
     EVEN_POLY_8 = auto()
     EVEN_POLY_10 = auto()
     RATIONAL = auto()
+
 
 class VerifierType(Enum):
     Z3 = auto()

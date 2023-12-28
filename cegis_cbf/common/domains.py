@@ -11,7 +11,6 @@ from cegis_cbf.common.utils import round_init_data, square_init_data
 
 
 class Set:
-
     def __init__(self, vars: list[str] = None) -> None:
         if vars is None:
             vars = [f"x{i}" for i in range(self.dimension)]
@@ -64,7 +63,13 @@ class Set:
 
 
 class Rectangle(Set):
-    def __init__(self, lb: tuple[float, ...], ub: tuple[float, ...], vars: list[str] = None, dim_select=None):
+    def __init__(
+        self,
+        lb: tuple[float, ...],
+        ub: tuple[float, ...],
+        vars: list[str] = None,
+        dim_select=None,
+    ):
         self.name = "square"
         self.lower_bounds = lb
         self.upper_bounds = ub
@@ -82,8 +87,12 @@ class Rectangle(Set):
         """
         f = verifier.FUNCTIONS
         dim_selection = [i for i, vx in enumerate(x) if str(vx) in self.vars]
-        lower = f["And"](*[self.lower_bounds[i] <= x[v_id] for i, v_id in enumerate(dim_selection)])
-        upper = f["And"](*[x[v_id] <= self.upper_bounds[i] for i, v_id in enumerate(dim_selection)])
+        lower = f["And"](
+            *[self.lower_bounds[i] <= x[v_id] for i, v_id in enumerate(dim_selection)]
+        )
+        upper = f["And"](
+            *[x[v_id] <= self.upper_bounds[i] for i, v_id in enumerate(dim_selection)]
+        )
         return f["And"](lower, upper)
 
     def generate_boundary(self, x):
@@ -119,15 +128,16 @@ class Rectangle(Set):
         """
         return square_init_data([self.lower_bounds, self.upper_bounds], batch_size)
 
-
-
     def get_vertices(self):
         """Returns vertices of the rectangle
 
         Returns:
             List: vertices of the rectangle
         """
-        spaces = [np.linspace(lb, ub, 2) for lb, ub in zip(self.lower_bounds, self.upper_bounds)]
+        spaces = [
+            np.linspace(lb, ub, 2)
+            for lb, ub in zip(self.lower_bounds, self.upper_bounds)
+        ]
         vertices = np.meshgrid(*spaces)
         vertices = np.array([v.flatten() for v in vertices]).T
         return vertices
@@ -193,8 +203,8 @@ class Sphere(Set):
         if self.dim_select:
             x = [x[i] for i in self.dim_select]
         return (
-                sum([(x[i] - self.centre[i]) ** 2 for i in range(len(x))])
-                <= self.radius ** 2
+            sum([(x[i] - self.centre[i]) ** 2 for i in range(len(x))])
+            <= self.radius**2
         )
 
     def generate_boundary(self, x):
@@ -205,8 +215,8 @@ class Sphere(Set):
         if self.dim_select:
             x = [x[i] for i in self.dim_select]
         return (
-                sum([(x[i] - self.centre[i]) ** 2 for i in range(self.dimension)])
-                == self.radius ** 2
+            sum([(x[i] - self.centre[i]) ** 2 for i in range(self.dimension)])
+            == self.radius**2
         )
 
     def generate_interior(self, x):
@@ -221,8 +231,8 @@ class Sphere(Set):
         if self.dim_select:
             x = [x[i] for i in self.dim_select]
         return (
-                sum([(x[i] - self.centre[i]) ** 2 for i in range(self.dimension)])
-                < self.radius ** 2
+            sum([(x[i] - self.centre[i]) ** 2 for i in range(self.dimension)])
+            < self.radius**2
         )
 
     def generate_data(self, batch_size):
@@ -230,7 +240,7 @@ class Sphere(Set):
         param batch_size: number of data points to generate
         returns: data points generated in relevant domain according to shape
         """
-        return round_init_data(self.centre, self.radius ** 2, batch_size)
+        return round_init_data(self.centre, self.radius**2, batch_size)
 
     def sample_border(self, batch_size):
         """
@@ -238,14 +248,14 @@ class Sphere(Set):
         returns: data points generated on the border of the set
         """
         return round_init_data(
-            self.centre, self.radius ** 2, batch_size, on_border=True
+            self.centre, self.radius**2, batch_size, on_border=True
         )
 
     def check_containment(self, x: torch.Tensor) -> torch.Tensor:
         if self.dim_select:
             x = [x[:, i] for i in self.dim_select]
         c = torch.tensor(self.centre).reshape(1, -1)
-        return (x - c).norm(2, dim=-1) <= self.radius ** 2
+        return (x - c).norm(2, dim=-1) <= self.radius**2
 
     def check_containment_grad(self, x: torch.Tensor) -> torch.Tensor:
         # check containment and return a tensor with gradient
@@ -255,7 +265,7 @@ class Sphere(Set):
             c = [self.centre[i] for i in self.dim_select]
             c = torch.tensor(c).reshape(1, -1)
         # returns 0 if it IS contained, a positive number otherwise
-        return torch.relu((x - c).norm(2, dim=-1) - self.radius ** 2)
+        return torch.relu((x - c).norm(2, dim=-1) - self.radius**2)
 
     def plot(self, fig, ax, label=None):
         if self.dimension != 2:
@@ -267,5 +277,3 @@ class Sphere(Set):
         yc = self.centre[1] + r * np.sin(theta)
         ax.plot(xc[:], yc[:], colour, linewidth=2, label=label)
         return fig, ax
-
-

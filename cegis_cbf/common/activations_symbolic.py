@@ -119,17 +119,18 @@ def relu_square_z3(x):
 def requ_z3(x):
     return np.multiply(x, relu(x))
 
+
 def poly3_sym(x):
     # linear - quadratic - cubic activation
     h = int(x.shape[0] / 3)
-    x1, x2, x3 = x[:h], x[h: 2 * h], x[2 * h:]
+    x1, x2, x3 = x[:h], x[h : 2 * h], x[2 * h :]
     return np.vstack([x1, np.power(x2, 2), np.power(x3, 3)])
 
 
 def poly4_sym(x):
     # linear - quadratic - cubic - quartic activation
     h = int(x.shape[0] / 4)
-    x1, x2, x3, x4 = x[:h], x[h: 2 * h], x[2 * h: 3 * h], x[3 * h:]
+    x1, x2, x3, x4 = x[:h], x[h : 2 * h], x[2 * h : 3 * h], x[3 * h :]
     return np.vstack([x1, np.power(x2, 2), np.power(x3, 3), np.power(x4, 4)])
 
 
@@ -138,10 +139,10 @@ def poly5_sym(x):
     h = int(x.shape[0] / 5)
     x1, x2, x3, x4, x5 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h :],
     )
     return np.vstack(
         [x1, np.power(x2, 2), np.power(x3, 3), np.power(x4, 4), np.power(x5, 5)]
@@ -153,11 +154,11 @@ def poly6_sym(x):
     h = int(x.shape[0] / 6)
     x1, x2, x3, x4, x5, x6 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h: 5 * h],
-        x[5 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h : 5 * h],
+        x[5 * h :],
     )
     return np.vstack(
         [
@@ -176,12 +177,12 @@ def poly7_sym(x):
     h = int(x.shape[0] / 7)
     x1, x2, x3, x4, x5, x6, x7 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h: 5 * h],
-        x[5 * h: 6 * h],
-        x[6 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h : 5 * h],
+        x[5 * h : 6 * h],
+        x[6 * h :],
     )
     return np.vstack(
         [
@@ -201,13 +202,13 @@ def poly8_sym(x):
     h = int(x.shape[0] / 8)
     x1, x2, x3, x4, x5, x6, x7, x8 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h: 5 * h],
-        x[5 * h: 6 * h],
-        x[6 * h: 7 * h],
-        x[7 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h : 5 * h],
+        x[5 * h : 6 * h],
+        x[6 * h : 7 * h],
+        x[7 * h :],
     )
     return np.vstack(
         [
@@ -241,8 +242,8 @@ def even_poly6_sym(x):
     h = int(x.shape[0] / 3)
     x1, x2, x3 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h:],
+        x[h : 2 * h],
+        x[2 * h :],
     )
     return np.vstack(
         [
@@ -257,9 +258,9 @@ def even_poly8_sym(x):
     h = int(x.shape[0] / 4)
     x1, x2, x3, x4 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h :],
     )
     return np.vstack(
         [
@@ -275,10 +276,10 @@ def even_poly10_sym(x):
     h = int(x.shape[0] / 5)
     x1, x2, x3, x4, x5 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h :],
     )
     return np.vstack(
         [
@@ -292,7 +293,7 @@ def even_poly10_sym(x):
 
 
 def rational_sym(x):
-    return x / (1 + (x ** 2) ** 0.5)
+    return x / (1 + (x**2) ** 0.5)
 
 
 ##############################
@@ -340,14 +341,14 @@ def requ_der_z3(x):
 def poly3_der_sym(x):
     # linear - quadratic - cubic activation
     h = int(x.shape[0] / 3)
-    x1, x2, x3 = x[:h], x[h: 2 * h], x[2 * h:]
+    x1, x2, x3 = x[:h], x[h : 2 * h], x[2 * h :]
     return np.vstack([np.ones((h, 1)), 2 * x2, 3 * np.power(x3, 2)])
 
 
 def poly4_der_sym(x):
     # # linear - quadratic - cubic - quartic activation
     h = int(x.shape[0] / 4)
-    x1, x2, x3, x4 = x[:h], x[h: 2 * h], x[2 * h: 3 * h], x[3 * h:]
+    x1, x2, x3, x4 = x[:h], x[h : 2 * h], x[2 * h : 3 * h], x[3 * h :]
     return np.vstack(
         [np.ones((h, 1)), 2 * x2, 3 * np.power(x3, 2), 4 * np.power(x4, 3)]
     )  # torch.pow(x, 2)
@@ -358,10 +359,10 @@ def poly5_der_sym(x):
     h = int(x.shape[0] / 5)
     x1, x2, x3, x4, x5 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h :],
     )
     return np.vstack(
         [
@@ -379,11 +380,11 @@ def poly6_der_sym(x):
     h = int(x.shape[0] / 6)
     x1, x2, x3, x4, x5, x6 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h: 5 * h],
-        x[5 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h : 5 * h],
+        x[5 * h :],
     )
     return np.vstack(
         [
@@ -402,12 +403,12 @@ def poly7_der_sym(x):
     h = int(x.shape[0] / 7)
     x1, x2, x3, x4, x5, x6, x7 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h: 5 * h],
-        x[5 * h: 6 * h],
-        x[6 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h : 5 * h],
+        x[5 * h : 6 * h],
+        x[6 * h :],
     )
     return np.vstack(
         [
@@ -427,13 +428,13 @@ def poly8_der_sym(x):
     h = int(x.shape[0] / 8)
     x1, x2, x3, x4, x5, x6, x7, x8 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h: 5 * h],
-        x[5 * h: 6 * h],
-        x[6 * h: 7 * h],
-        x[7 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h : 5 * h],
+        x[5 * h : 6 * h],
+        x[6 * h : 7 * h],
+        x[7 * h :],
     )
     return np.vstack(
         [
@@ -467,8 +468,8 @@ def even_poly6_der_sym(x):
     h = int(x.shape[0] / 3)
     x1, x2, x3 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h:],
+        x[h : 2 * h],
+        x[2 * h :],
     )
     return np.vstack(
         [
@@ -483,9 +484,9 @@ def even_poly8_der_sym(x):
     h = int(x.shape[0] / 4)
     x1, x2, x3, x4 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h :],
     )
     return np.vstack(
         [
@@ -501,10 +502,10 @@ def even_poly10_der_sym(x):
     h = int(x.shape[0] / 5)
     x1, x2, x3, x4, x5 = (
         x[:h],
-        x[h: 2 * h],
-        x[2 * h: 3 * h],
-        x[3 * h: 4 * h],
-        x[4 * h:],
+        x[h : 2 * h],
+        x[2 * h : 3 * h],
+        x[3 * h : 4 * h],
+        x[4 * h :],
     )
     return np.vstack(
         [
@@ -518,4 +519,4 @@ def even_poly10_der_sym(x):
 
 
 def rational_der_sym(x):
-    return 1 / (1 + x ** 2)
+    return 1 / (1 + x**2)

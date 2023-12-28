@@ -9,7 +9,6 @@ from cegis_cbf.verifier import VerifierZ3
 
 
 class TestTranslator(unittest.TestCase):
-
     def test_translator_linear_layer(self):
         import z3
 
@@ -38,8 +37,12 @@ class TestTranslator(unittest.TestCase):
         expected_expr_nn = z3.simplify(expected_expr_nn[0])
         expected_expr_nndot = z3.simplify(expected_expr_nndot[0])
 
-        assert str(expr_nn) == str(expected_expr_nn), f"Wrong symbolic formula for V, got {expr_nn}"
-        assert str(expr_nndot) == str(expected_expr_nndot), f"Wrong symbolic formula for Vdot, got {expr_nndot}"
+        assert str(expr_nn) == str(
+            expected_expr_nn
+        ), f"Wrong symbolic formula for V, got {expr_nn}"
+        assert str(expr_nndot) == str(
+            expected_expr_nndot
+        ), f"Wrong symbolic formula for Vdot, got {expr_nndot}"
 
     def test_separation_symbolic_functions(self):
         n_vars = 2
@@ -59,15 +62,25 @@ class TestTranslator(unittest.TestCase):
         expr_nn_grad = translator.get_symbolic_net_grad(x, nn)
         expr_nndot2 = (expr_nn_grad @ xdot)[0, 0]
 
-        assert str(expr_nn) == str(expr_nn2), f"Wrong symbolic formula for V, got {expr_nn}"
-        assert str(expr_nndot) == str(expr_nndot2), f"Wrong symbolic formula for Vdot, got {expr_nndot}"
+        assert str(expr_nn) == str(
+            expr_nn2
+        ), f"Wrong symbolic formula for V, got {expr_nn}"
+        assert str(expr_nndot) == str(
+            expr_nndot2
+        ), f"Wrong symbolic formula for Vdot, got {expr_nndot}"
 
     def test_factory(self):
         from cegis_cbf.common.consts import VerifierType
         from cegis_cbf.common.consts import TimeDomain
 
-        translator = make_translator(verifier_type=VerifierType.Z3, time_domain=TimeDomain.CONTINUOUS)
+        translator = make_translator(
+            verifier_type=VerifierType.Z3, time_domain=TimeDomain.CONTINUOUS
+        )
         self.assertTrue(isinstance(translator, MLPZ3Translator))
 
-        self.assertRaises(NotImplementedError, make_translator,
-                          verifier_type=VerifierType.Z3, time_domain=TimeDomain.DISCRETE)
+        self.assertRaises(
+            NotImplementedError,
+            make_translator,
+            verifier_type=VerifierType.Z3,
+            time_domain=TimeDomain.DISCRETE,
+        )

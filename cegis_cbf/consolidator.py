@@ -2,8 +2,7 @@ import torch
 
 
 class Consolidator:
-
-    def get(self,  cex, datasets, **kwargs):
+    def get(self, cex, datasets, **kwargs):
         datasets = self.add_ces_to_data(cex, datasets)
         return {"datasets": datasets}
 

@@ -6,7 +6,6 @@ from cegis_cbf.verifier import make_verifier, Verifier, SYMBOL
 
 
 class TestVerifier(unittest.TestCase):
-
     def test_simple_constraints(self):
         import z3
 
@@ -27,7 +26,11 @@ class TestVerifier(unittest.TestCase):
         results = verifier.verify(V_symbolic=C, Vdot_symbolic=dC)
         results2 = verifier2.verify(V_symbolic=C, Vdot_symbolic=dC)
 
-        self.assertTrue(len(results["cex"]["sat"]) > 0, "expected counterexample for any x > -1, got none")
-        self.assertTrue(len(results2["cex"]["unsat"]) == 0, f"expected no counterexample, got {results2['cex']['unsat']}")
-
-
+        self.assertTrue(
+            len(results["cex"]["sat"]) > 0,
+            "expected counterexample for any x > -1, got none",
+        )
+        self.assertTrue(
+            len(results2["cex"]["unsat"]) == 0,
+            f"expected no counterexample, got {results2['cex']['unsat']}",
+        )
