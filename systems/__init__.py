@@ -1,7 +1,9 @@
+from typing import Type
+
 from .system import ControlAffineControllableDynamicalModel
 
 
-def make_system(id: str) -> ControlAffineControllableDynamicalModel:
+def make_system(id: str) -> Type[ControlAffineControllableDynamicalModel]:
     if id == "single_integrator":
         from systems.single_integrator import SingleIntegrator
         return SingleIntegrator

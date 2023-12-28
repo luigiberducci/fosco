@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import z3
 
-from cegis.common.utils import contains_object
+from cegis_cbf.common.utils import contains_object
 
 
 class ControlAffineControllableDynamicalModel:

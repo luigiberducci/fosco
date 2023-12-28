@@ -4,15 +4,17 @@ from collections import namedtuple
 from dataclasses import dataclass, replace
 from typing import Any, Type
 
+import matplotlib.pyplot as plt
 import torch
 
-from cegis.cbf import ControlBarrierFunction
-from cegis.common.formatter import CustomFormatter
-from cegis.consolidator import Consolidator, make_consolidator
-from cegis.common.consts import CertificateType, TimeDomain, ActivationType, VerifierType, DomainNames
-from cegis.learner import make_learner, LearnerNN
-from cegis.translator import make_translator
-from cegis.verifier import make_verifier
+from cegis_cbf.cbf import ControlBarrierFunction
+from cegis_cbf.common.formatter import CustomFormatter
+from cegis_cbf.common.plotting import benchmark_3d
+from cegis_cbf.consolidator import Consolidator, make_consolidator
+from cegis_cbf.common.consts import CertificateType, TimeDomain, ActivationType, VerifierType, DomainNames
+from cegis_cbf.learner import make_learner, LearnerNN
+from cegis_cbf.translator import make_translator
+from cegis_cbf.verifier import make_verifier
 from systems import ControlAffineControllableDynamicalModel
 
 CegisResult = namedtuple("CegisResult", ["found", "net", "infos"])
@@ -24,7 +26,7 @@ class CegisConfig:
     SYSTEM: Type[ControlAffineControllableDynamicalModel] = None
     DOMAINS: dict[str, Any] = None
     TIME_DOMAIN: TimeDomain = TimeDomain.CONTINUOUS
-    # cegis
+    # cegis_cbf
     CERTIFICATE: CertificateType = CertificateType.CBF
     VERIFIER: VerifierType = VerifierType.Z3
     CEGIS_MAX_ITERS: int = 10
@@ -148,6 +150,13 @@ class Cegis:
         for iter in range(1, self.config.CEGIS_MAX_ITERS + 1):
             self.logger.debug(f"Iteration {iter}")
 
+            # debug print
+            domains = self.config.DOMAINS
+            xrange = domains["lie"].lower_bounds[0], domains["lie"].upper_bounds[0]
+            yrange = domains["lie"].lower_bounds[1], domains["lie"].upper_bounds[1]
+            ax2 = benchmark_3d(self.learner, domains, [0.0], xrange, yrange, title=f"CBF - Iter {iter}")
+            plt.show()
+
             # Learner component
             self.logger.debug("Learner")
             outputs = self.learner.update(**state)
@@ -210,5 +219,5 @@ class Cegis:
     def _assert_state(self):
         assert self.config.LEARNING_RATE > 0
         assert self.config.CEGIS_MAX_ITERS > 0
-        assert self.x is self.verifier.xs, "expected same variables in cegis and verifier"
+        assert self.x is self.verifier.xs, "expected same variables in cegis_cbf and verifier"
         self.certificate._assert_state(self.domains, self.datasets)

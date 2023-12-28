@@ -1,6 +1,6 @@
 import unittest
 
-from cegis.common import domains
+from cegis_cbf.common import domains
 
 
 class TestDomains(unittest.TestCase):

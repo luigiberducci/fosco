@@ -5,11 +5,11 @@ from typing import Generator
 import torch
 from torch.optim import Optimizer
 
-from cegis.common.domains import Set, Rectangle
-from cegis.common.consts import DomainNames
-from cegis.common.utils import _set_assertion
-from cegis.learner import LearnerNN, LearnerCT
-from cegis.verifier import SYMBOL
+from cegis_cbf.common.domains import Set, Rectangle
+from cegis_cbf.common.consts import DomainNames
+from cegis_cbf.common.utils import _set_assertion
+from cegis_cbf.learner import LearnerNN, LearnerCT
+from cegis_cbf.verifier import SYMBOL
 from systems import ControlAffineControllableDynamicalModel
 
 XD = DomainNames.XD.value
@@ -38,7 +38,7 @@ class ControlBarrierFunction:
         self.u_set: Rectangle = domains[UD]
         self.u_domain: SYMBOL = domains[UD].generate_domain(self.u_vars)
         self.initial_domain: SYMBOL = domains[XI].generate_domain(self.x_vars)
-        self.unsafe_domain: SYMBOL = domains[XU].generate_domain(self.u_vars)
+        self.unsafe_domain: SYMBOL = domains[XU].generate_domain(self.x_vars)
 
         assert isinstance(self.u_set, Rectangle), f"CBF only works with rectangular input domains, got {self.u_set}"
         self.n_vars = len(self.x_vars)
@@ -153,7 +153,7 @@ class ControlBarrierFunction:
 
             if t % math.ceil(self.epochs / 10) == 0 or self.epochs - t < 10:
                 #log_loss_acc(t, loss, accuracy, learner.verbose)
-                print(f"Epoch {t}: loss={loss}, accuracy={accuracy}")
+                logging.debug(f"Epoch {t}: loss={loss}, accuracy={accuracy}")
 
             # early stopping after 2 consecutive epochs with ~100% accuracy
             condition = all(acc >= 99.9 for name, acc in accuracy.items())
@@ -207,6 +207,10 @@ class ControlBarrierFunction:
         lie_constr = _And(lie_constr, self.x_domain)
         inital_constr = _And(initial_constr, self.x_domain)
         unsafe_constr = _And(unsafe_constr, self.x_domain)
+
+        logging.debug(f"lie_constr: {lie_constr}")
+        logging.debug(f"inital_constr: {inital_constr}")
+        logging.debug(f"unsafe_constr: {unsafe_constr}")
 
         for cs in (
                 {XI: (inital_constr, self.x_vars), XU: (unsafe_constr, self.x_vars)},

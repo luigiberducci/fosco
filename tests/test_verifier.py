@@ -1,8 +1,8 @@
 import unittest
 
 
-from cegis.common.consts import VerifierType
-from cegis.verifier import make_verifier, Verifier, SYMBOL
+from cegis_cbf.common.consts import VerifierType
+from cegis_cbf.verifier import make_verifier, Verifier, SYMBOL
 
 
 class TestVerifier(unittest.TestCase):

@@ -3,9 +3,9 @@ import unittest
 import numpy as np
 import torch
 
-from cegis.models.network import MLP
-from cegis.translator import MLPZ3Translator, make_translator
-from cegis.verifier import VerifierZ3
+from cegis_cbf.models.network import MLP
+from cegis_cbf.translator import MLPZ3Translator, make_translator
+from cegis_cbf.verifier import VerifierZ3
 
 
 class TestTranslator(unittest.TestCase):
@@ -63,8 +63,8 @@ class TestTranslator(unittest.TestCase):
         assert str(expr_nndot) == str(expr_nndot2), f"Wrong symbolic formula for Vdot, got {expr_nndot}"
 
     def test_factory(self):
-        from cegis.common.consts import VerifierType
-        from cegis.common.consts import TimeDomain
+        from cegis_cbf.common.consts import VerifierType
+        from cegis_cbf.common.consts import TimeDomain
 
         translator = make_translator(verifier_type=VerifierType.Z3, time_domain=TimeDomain.CONTINUOUS)
         self.assertTrue(isinstance(translator, MLPZ3Translator))

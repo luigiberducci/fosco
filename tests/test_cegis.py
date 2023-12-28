@@ -3,9 +3,9 @@ import unittest
 
 import torch
 
-from cegis.cegis import CegisConfig, Cegis
-from cegis.common.domains import Rectangle, Sphere
-from cegis.common.consts import TimeDomain, ActivationType, VerifierType, CertificateType, DomainNames
+from cegis_cbf.cegis import CegisConfig, Cegis
+from cegis_cbf.common.domains import Rectangle, Sphere
+from cegis_cbf.common.consts import TimeDomain, ActivationType, VerifierType, CertificateType, DomainNames
 from systems.single_integrator import SingleIntegrator
 
 class TestCEGIS(unittest.TestCase):

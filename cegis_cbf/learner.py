@@ -5,9 +5,9 @@ import numpy as np
 import torch
 from torch import nn
 
-from cegis.common.activations import activation
-from cegis.common.consts import ActivationType, TimeDomain
-from cegis.models.network import MLP
+from cegis_cbf.common.activations import activation
+from cegis_cbf.common.consts import ActivationType, TimeDomain
+from cegis_cbf.models.network import MLP
 
 
 class LearnerNN(nn.Module):

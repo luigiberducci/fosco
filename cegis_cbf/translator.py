@@ -4,10 +4,10 @@ from typing import Iterable
 import numpy as np
 import z3
 
-from cegis.common.activations_symbolic import activation_sym, activation_der_sym
-from cegis.common.consts import VerifierType, TimeDomain
-from cegis.models.network import MLP
-from cegis.verifier import SYMBOL
+from cegis_cbf.common.activations_symbolic import activation_sym, activation_der_sym
+from cegis_cbf.common.consts import VerifierType, TimeDomain
+from cegis_cbf.models.network import MLP
+from cegis_cbf.verifier import SYMBOL
 
 
 class Translator(ABC):

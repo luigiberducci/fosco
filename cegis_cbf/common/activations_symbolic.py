@@ -7,7 +7,7 @@
 import numpy as np
 import z3
 
-from cegis.common import consts
+from cegis_cbf.common import consts
 
 
 def activation_sym(select, p):

@@ -1,7 +1,7 @@
 from torch import nn
 
-from cegis.common.activations import activation
-from cegis.common.consts import ActivationType
+from cegis_cbf.common.activations import activation
+from cegis_cbf.common.consts import ActivationType
 
 
 class MLP(nn.Module):

@@ -5,8 +5,8 @@ from typing import Callable, Generator, Iterable, Type
 import torch
 import z3
 
-from cegis.common.utils import contains_object
-from cegis.common.consts import VerifierType
+from cegis_cbf.common.utils import contains_object
+from cegis_cbf.common.consts import VerifierType
 
 SYMBOL = z3.ArithRef
 INF: float = 1e300
@@ -124,8 +124,8 @@ class Verifier:
             for index, o in enumerate(results.items()):
                 label, res = o
                 if self.is_sat(res):
-                    logging.info(label + ": ")
                     original_point = self.compute_model(vars=solver_vars[label], solver=solvers[label], res=res)
+                    logging.info(f"{label}: Counterexample Found: {original_point}")
 
                     V_ctx = self.replace_point(V_symbolic, solver_vars[label], original_point.numpy().T)
                     Vdot_ctx = self.replace_point(Vdot_symbolic, solver_vars[label], original_point.numpy().T)
@@ -165,7 +165,6 @@ class Verifier:
         :return: tensor containing single ctx
         """
         model = self._solver_model(solver, res)
-        logging.info("Counterexample Found: {}".format(model))
         temp = []
         for i, x in enumerate(vars):
             n = self._model_result(solver, model, x, i)

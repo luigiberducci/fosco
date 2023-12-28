@@ -2,9 +2,12 @@ from functools import partial
 
 import numpy as np
 import torch
+from matplotlib import pyplot as plt
+from mpl_toolkits.mplot3d import art3d
 
-from cegis import verifier
-from cegis.common.utils import round_init_data, square_init_data
+from cegis_cbf import verifier
+from cegis_cbf.common.plotting import get_plot_colour
+from cegis_cbf.common.utils import round_init_data, square_init_data
 
 
 class Set:
@@ -116,25 +119,7 @@ class Rectangle(Set):
         """
         return square_init_data([self.lower_bounds, self.upper_bounds], batch_size)
 
-    def sample_border(self, batch_size):
-        """Samples boundary points
 
-        Args:
-            batch_size (int): number of points to sample
-
-        Returns:
-            torch.Tensor: sampled boundary points
-        """
-        # This won't be uniform but it should be fast
-
-        zero = [0] * self.dimension
-        unit_sphere = round_init_data(zero, 1.0, batch_size, on_border=True)
-        for i in range(unit_sphere.shape[0]):
-            unit_sphere[i] = sphere_to_cube(unit_sphere[i])
-            unit_sphere[i] = cube_move(
-                unit_sphere[i], self.lower_bounds, self.upper_bounds
-            )
-        return unit_sphere
 
     def get_vertices(self):
         """Returns vertices of the rectangle
@@ -271,5 +256,16 @@ class Sphere(Set):
             c = torch.tensor(c).reshape(1, -1)
         # returns 0 if it IS contained, a positive number otherwise
         return torch.relu((x - c).norm(2, dim=-1) - self.radius ** 2)
+
+    def plot(self, fig, ax, label=None):
+        if self.dimension != 2:
+            raise NotImplementedError("Plotting only supported for 2D sets")
+        colour, label = get_plot_colour(label)
+        r = self.radius
+        theta = np.linspace(0, 2 * np.pi, 50)
+        xc = self.centre[0] + r * np.cos(theta)
+        yc = self.centre[1] + r * np.sin(theta)
+        ax.plot(xc[:], yc[:], colour, linewidth=2, label=label)
+        return fig, ax
 
 

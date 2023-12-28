@@ -1,13 +1,14 @@
+import logging
 import random
 
-import numpy as np
 import torch
 from matplotlib import pyplot as plt
 
-import cegis.cegis
-from cegis.common import domains
-from cegis.common.activations import ActivationType
-from cegis.common.consts import CertificateType, TimeDomain, VerifierType
+import cegis_cbf.cegis
+from cegis_cbf.common import domains
+from cegis_cbf.common.consts import ActivationType
+from cegis_cbf.common.consts import CertificateType, TimeDomain, VerifierType
+from cegis_cbf.common.plotting import benchmark_3d
 from systems import make_system
 
 
@@ -15,9 +16,13 @@ def main():
     seed = 916104
     system_name = "single_integrator"
     n_hidden_neurons = 10
-    activations = [ActivationType.RELU, ActivationType.LINEAR]
+    activations = (ActivationType.RELU, ActivationType.LINEAR)
+    verbose = 0
 
-    n_hidden_neurons = [n_hidden_neurons] * len(activations)
+    log_levels = [logging.INFO, logging.DEBUG]
+    logging.basicConfig(level=log_levels[verbose])
+
+    n_hidden_neurons = (n_hidden_neurons,) * len(activations)
 
     system = make_system(id=system_name)
     if system_name == "single_integrator":
@@ -50,49 +55,37 @@ def main():
         "init": XI,
         "unsafe": XU,
     }
-    data = {
+    data_gen = {
         "lie": lambda n: torch.concatenate([XD.generate_data(n), UD.generate_data(n)], dim=1),
-        "init": lambda n: XI._generate_data(n),
-        "unsafe": lambda n: XU._generate_data(n),
+        "init": lambda n: XI.generate_data(n),
+        "unsafe": lambda n: XU.generate_data(n),
     }
 
-    opts = cegis.CegisConfig(
-        N_VARS=system().n_vars,
-        N_CONTROLS=system().n_controls,
+    config = cegis_cbf.cegis.CegisConfig(
         SYSTEM=system,
         DOMAINS=sets,
-        DATA=data,
+        DATA_GEN=data_gen,
         CERTIFICATE=CertificateType.CBF,
         TIME_DOMAIN=TimeDomain.CONTINUOUS,
         VERIFIER=VerifierType.Z3,
         ACTIVATION=activations,
         N_HIDDEN_NEURONS=n_hidden_neurons,
-        SYMMETRIC_BELT=False,
         CEGIS_MAX_ITERS=100,
-        VERBOSE=1,
         SEED=seed,
     )
+    cegis = cegis_cbf.cegis.Cegis(config=config, verbose=verbose)
 
     levels = [[0.0]]
 
-    result = fossil.synthesise(
-        opts,
-    )
-
-    ctrl = control.DummyController(
-        inputs=opts.N_VARS,
-        output=opts.N_CONTROLS,
-        const_out=1.0
-    )
-    closed_loop_model = control.GeneralClosedLoopModel(result.f, ctrl)
+    result = cegis.solve()
 
     if XD.dimension == 2:
         xrange = (XD.lower_bounds[0], XD.upper_bounds[0])
         yrange = (XD.lower_bounds[1], XD.upper_bounds[1])
 
-        ax1 = benchmark_plane(closed_loop_model, [result.cert], opts.DOMAINS, levels, xrange, yrange)
-        ax2 = benchmark_3d([result.cert], opts.DOMAINS, levels, xrange, yrange)
-        ax3 = benchmark_lie(closed_loop_model, [result.cert], opts.DOMAINS, levels, xrange, yrange)
+        #ax1 = benchmark_plane(closed_loop_model, [result.cert], config.DOMAINS, levels, xrange, yrange)
+        ax2 = benchmark_3d(result.net, config.DOMAINS, [0.0], xrange, yrange, title="CBF")
+        #ax3 = benchmark_lie(closed_loop_model, [result.cert], config.DOMAINS, levels, xrange, yrange)
 
         plt.show()
 
