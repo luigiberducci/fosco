@@ -19,7 +19,7 @@ system and unsafe set.
 
 ![Example CBF Single-Integrator](docs%2Fsingle_integrator.gif)
 
-## Installation
+## :wrench: Installation 
 The code is written in Python 3.10 and uses [PyTorch](https://pytorch.org/) for
 learning a CBF.
 We recommend using a virtual environment.
@@ -29,7 +29,7 @@ To install the required dependencies, run
 pip install -r requirements.txt
 ```
 
-## Examples
+## :rocket: Examples 
 We provide a simple example for a single-integrator system in 
 [`run_example.py`](run_example.py).
 
@@ -38,7 +38,7 @@ To run the example, run
 python run_example.py
 ```
 
-## Disclaimer
+## :warning: Disclaimer
 This is a research prototype, tailored for CBF and built on top of [FOSSIL](https://github.com/oxford-oxcav/fossil).
 Our implementation aims to refactor the original codebase and keep the minimal functionality required for CBF synthesis.
 
