@@ -1,6 +1,6 @@
-<h2 align="center">
+<h1 align="center">
 FOSCo: FOrmal Synthesis of COntrol Barrier Functions
-</h2>
+</h1>
 
 <p align="center">
 <a href="https://opensource.org/license/bsd-3-clause/"><img alt="License" src="https://img.shields.io/badge/License-BSD_3--Clause-blue.svg"></a>
