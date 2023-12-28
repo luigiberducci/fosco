@@ -9,13 +9,11 @@ FOSCo: FOrmal Synthesis of COntrol Barrier Functions
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
-Learner-verifier framework for synthesis of Control Barrier Functions (CBFs) 
-for
-general (nonlinear) control-affine systems.
+**Learner-verifier framework** for synthesis of Control Barrier Functions (**CBFs**) 
+for (nonlinear) control-affine systems.
 
-We use a counterexample-guided inductive synthesis (CEGIS) approach to
-learn a CBF that guarantees forward invariance with respect to a given
-system and unsafe set.
+We use a **counterexample-guided inductive synthesis** (CEGIS) approach to
+learn a CBF which is guaranteed to be valid.
 
 ![Example CBF Single-Integrator](docs%2Fsingle_integrator.gif)
 
