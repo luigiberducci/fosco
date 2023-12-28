@@ -3,9 +3,9 @@ import unittest
 import numpy as np
 import torch
 
-from cegis_cbf.models.network import MLP
-from cegis_cbf.translator import MLPZ3Translator, make_translator
-from cegis_cbf.verifier import VerifierZ3
+from fosco.models.network import MLP
+from fosco.translator import MLPZ3Translator, make_translator
+from fosco.verifier import VerifierZ3
 
 
 class TestTranslator(unittest.TestCase):
@@ -70,8 +70,8 @@ class TestTranslator(unittest.TestCase):
         ), f"Wrong symbolic formula for Vdot, got {expr_nndot}"
 
     def test_factory(self):
-        from cegis_cbf.common.consts import VerifierType
-        from cegis_cbf.common.consts import TimeDomain
+        from fosco.common.consts import VerifierType
+        from fosco.common.consts import TimeDomain
 
         translator = make_translator(
             verifier_type=VerifierType.Z3, time_domain=TimeDomain.CONTINUOUS

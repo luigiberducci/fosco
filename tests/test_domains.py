@@ -1,6 +1,6 @@
 import unittest
 
-from cegis_cbf.common import domains
+from fosco.common import domains
 
 
 class TestDomains(unittest.TestCase):

@@ -4,11 +4,11 @@ import random
 import torch
 from matplotlib import pyplot as plt
 
-import cegis_cbf.cegis
-from cegis_cbf.common import domains
-from cegis_cbf.common.consts import ActivationType
-from cegis_cbf.common.consts import CertificateType, TimeDomain, VerifierType
-from cegis_cbf.common.plotting import benchmark_3d
+import fosco.cegis
+from fosco.common import domains
+from fosco.common.consts import ActivationType
+from fosco.common.consts import CertificateType, TimeDomain, VerifierType
+from fosco.common.plotting import benchmark_3d
 from systems import make_system
 
 
@@ -72,7 +72,7 @@ def main():
         "unsafe": lambda n: XU.generate_data(n),
     }
 
-    config = cegis_cbf.cegis.CegisConfig(
+    config = fosco.cegis.CegisConfig(
         SYSTEM=system,
         DOMAINS=sets,
         DATA_GEN=data_gen,
@@ -85,7 +85,7 @@ def main():
         N_DATA=n_data_samples,
         SEED=seed,
     )
-    cegis = cegis_cbf.cegis.Cegis(config=config, verbose=verbose)
+    cegis = fosco.cegis.Cegis(config=config, verbose=verbose)
 
     result = cegis.solve()
 

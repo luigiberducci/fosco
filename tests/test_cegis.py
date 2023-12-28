@@ -3,9 +3,9 @@ import unittest
 
 import torch
 
-from cegis_cbf.cegis import CegisConfig, Cegis
-from cegis_cbf.common.domains import Rectangle, Sphere
-from cegis_cbf.common.consts import (
+from fosco.cegis import CegisConfig, Cegis
+from fosco.common.domains import Rectangle, Sphere
+from fosco.common.consts import (
     TimeDomain,
     ActivationType,
     VerifierType,

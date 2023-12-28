@@ -1,6 +1,6 @@
 import torch
 
-from cegis_cbf.common import consts
+from fosco.common import consts
 
 
 # Activation function

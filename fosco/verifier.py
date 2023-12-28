@@ -5,8 +5,8 @@ from typing import Callable, Generator, Iterable, Type
 import torch
 import z3
 
-from cegis_cbf.common.utils import contains_object
-from cegis_cbf.common.consts import VerifierType
+from fosco.common.utils import contains_object
+from fosco.common.consts import VerifierType
 
 SYMBOL = z3.ArithRef
 INF: float = 1e300

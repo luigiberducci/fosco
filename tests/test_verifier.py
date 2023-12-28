@@ -1,8 +1,8 @@
 import unittest
 
 
-from cegis_cbf.common.consts import VerifierType
-from cegis_cbf.verifier import make_verifier, Verifier, SYMBOL
+from fosco.common.consts import VerifierType
+from fosco.verifier import make_verifier, Verifier, SYMBOL
 
 
 class TestVerifier(unittest.TestCase):

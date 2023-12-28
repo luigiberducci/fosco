@@ -5,11 +5,11 @@ from typing import Generator
 import torch
 from torch.optim import Optimizer
 
-from cegis_cbf.common.domains import Set, Rectangle
-from cegis_cbf.common.consts import DomainNames
-from cegis_cbf.common.utils import _set_assertion
-from cegis_cbf.learner import LearnerNN, LearnerCT
-from cegis_cbf.verifier import SYMBOL
+from fosco.common.domains import Set, Rectangle
+from fosco.common.consts import DomainNames
+from fosco.common.utils import _set_assertion
+from fosco.learner import LearnerNN, LearnerCT
+from fosco.verifier import SYMBOL
 from systems import ControlAffineControllableDynamicalModel
 
 XD = DomainNames.XD.value

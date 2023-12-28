@@ -4,7 +4,7 @@ import numpy as np
 import torch
 import z3
 
-from cegis_cbf.common.utils import contains_object
+from fosco.common.utils import contains_object
 
 
 class ControlAffineControllableDynamicalModel:

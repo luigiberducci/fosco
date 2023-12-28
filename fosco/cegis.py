@@ -6,19 +6,19 @@ from typing import Any, Type
 
 import matplotlib.pyplot as plt
 
-from cegis_cbf.cbf import ControlBarrierFunction
-from cegis_cbf.common.formatter import CustomFormatter
-from cegis_cbf.common.plotting import benchmark_3d
-from cegis_cbf.consolidator import make_consolidator
-from cegis_cbf.common.consts import (
+from fosco.cbf import ControlBarrierFunction
+from fosco.common.formatter import CustomFormatter
+from fosco.common.plotting import benchmark_3d
+from fosco.consolidator import make_consolidator
+from fosco.common.consts import (
     CertificateType,
     TimeDomain,
     ActivationType,
     VerifierType,
 )
-from cegis_cbf.learner import make_learner, LearnerNN
-from cegis_cbf.translator import make_translator
-from cegis_cbf.verifier import make_verifier
+from fosco.learner import make_learner, LearnerNN
+from fosco.translator import make_translator
+from fosco.verifier import make_verifier
 from systems import ControlAffineControllableDynamicalModel
 
 CegisResult = namedtuple("CegisResult", ["found", "net", "infos"])
@@ -32,7 +32,7 @@ class CegisConfig:
     SYSTEM: Type[ControlAffineControllableDynamicalModel] = None
     DOMAINS: dict[str, Any] = None
     TIME_DOMAIN: TimeDomain = TimeDomain.CONTINUOUS
-    # cegis_cbf
+    # fosco
     CERTIFICATE: CertificateType = CertificateType.CBF
     VERIFIER: VerifierType = VerifierType.Z3
     CEGIS_MAX_ITERS: int = 10
@@ -233,5 +233,5 @@ class Cegis:
         assert self.config.CEGIS_MAX_ITERS > 0
         assert (
             self.x is self.verifier.xs
-        ), "expected same variables in cegis_cbf and verifier"
+        ), "expected same variables in fosco and verifier"
         self.certificate._assert_state(self.domains, self.datasets)

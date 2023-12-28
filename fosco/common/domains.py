@@ -5,9 +5,9 @@ import torch
 from matplotlib import pyplot as plt
 from mpl_toolkits.mplot3d import art3d
 
-from cegis_cbf import verifier
-from cegis_cbf.common.plotting import get_plot_colour
-from cegis_cbf.common.utils import round_init_data, square_init_data
+from fosco import verifier
+from fosco.common.plotting import get_plot_colour
+from fosco.common.utils import round_init_data, square_init_data
 
 
 class Set:
