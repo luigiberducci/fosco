@@ -17,6 +17,7 @@ def main():
     system_name = "single_integrator"
     n_hidden_neurons = 10
     activations = (ActivationType.RELU, ActivationType.LINEAR)
+    n_data_samples = 500
     verbose = 0
 
     log_levels = [logging.INFO, logging.DEBUG]
@@ -71,15 +72,16 @@ def main():
         ACTIVATION=activations,
         N_HIDDEN_NEURONS=n_hidden_neurons,
         CEGIS_MAX_ITERS=100,
+        N_DATA=n_data_samples,
         SEED=seed,
     )
     cegis = cegis_cbf.cegis.Cegis(config=config, verbose=verbose)
 
-    levels = [[0.0]]
-
     result = cegis.solve()
 
     if XD.dimension == 2:
+        plt.clf()
+
         xrange = (XD.lower_bounds[0], XD.upper_bounds[0])
         yrange = (XD.lower_bounds[1], XD.upper_bounds[1])
 
@@ -87,6 +89,7 @@ def main():
         ax2 = benchmark_3d(result.net, config.DOMAINS, [0.0], xrange, yrange, title="CBF")
         #ax3 = benchmark_lie(closed_loop_model, [result.cert], config.DOMAINS, levels, xrange, yrange)
 
+        plt.savefig(f"cbf_final.png", dpi=300)
         plt.show()
 
 
