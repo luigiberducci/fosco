@@ -59,6 +59,7 @@ class TestCEGIS(unittest.TestCase):
 
     def test_loop(self):
         config = self._get_single_integrator_config()
+        config.N_DATA = 1  # reduce data size so that we don't learn anything in 10 iters
         config.LEARNING_RATE = 1e-30  # make learning rate small so that we don't learn anything in 10 iters
 
         c = Cegis(config=config, verbose=2)
