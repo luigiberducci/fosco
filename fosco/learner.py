@@ -15,11 +15,7 @@ class LearnerNN(nn.Module):
     def update(self, **kwargs) -> dict:
         raise NotImplementedError
 
-    def learn(
-        self,
-        datasets: torch.Tensor,
-        xdot_func: Callable,
-    ) -> dict:
+    def learn(self, datasets: torch.Tensor, xdot_func: Callable,) -> dict:
         return self.learn_method(self, self.optimizer, datasets, xdot_func)
 
     def forward(self, x: torch.Tensor) -> torch.Tensor:
@@ -94,9 +90,7 @@ class LearnerCT(LearnerNN):
         )
 
         self.optimizer = torch.optim.AdamW(
-            params=self.parameters(),
-            lr=lr,
-            weight_decay=weight_decay,
+            params=self.parameters(), lr=lr, weight_decay=weight_decay,
         )
 
         self.learn_method = learn_method

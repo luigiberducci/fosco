@@ -50,10 +50,7 @@ class TestCEGIS(unittest.TestCase):
             N_DATA=500,
             LEARNING_RATE=1e-3,
             WEIGHT_DECAY=1e-4,
-            N_HIDDEN_NEURONS=(
-                10,
-                10,
-            ),
+            N_HIDDEN_NEURONS=(10, 10,),
             ACTIVATION=(ActivationType.RELU, ActivationType.LINEAR),
             SEED=0,
         )

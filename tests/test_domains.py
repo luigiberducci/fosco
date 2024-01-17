@@ -30,4 +30,4 @@ class TestDomains(unittest.TestCase):
 
         for sample in data:
             x, y, z = sample
-            self.assertLessEqual(x**2 + y**2 + z**2, 5.0**2)
+            self.assertLessEqual(x ** 2 + y ** 2 + z ** 2, 5.0 ** 2)

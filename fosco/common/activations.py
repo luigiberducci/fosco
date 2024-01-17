@@ -232,13 +232,7 @@ def poly_8(x):
 def even_poly4(x):
     h = int(x.shape[1] / 2)
     x1, x2 = (x[:, :h], x[:, h:])
-    return torch.cat(
-        [
-            torch.pow(x1, 2),
-            torch.pow(x2, 4),
-        ],
-        dim=1,
-    )
+    return torch.cat([torch.pow(x1, 2), torch.pow(x2, 4),], dim=1,)
 
 
 def even_poly6(x):
@@ -248,14 +242,7 @@ def even_poly6(x):
         x[:, h : 2 * h],
         x[:, 2 * h :],
     )
-    return torch.cat(
-        [
-            torch.pow(x1, 2),
-            torch.pow(x2, 4),
-            torch.pow(x3, 6),
-        ],
-        dim=1,
-    )
+    return torch.cat([torch.pow(x1, 2), torch.pow(x2, 4), torch.pow(x3, 6),], dim=1,)
 
 
 def even_poly8(x):
@@ -267,12 +254,7 @@ def even_poly8(x):
         x[:, 3 * h :],
     )
     return torch.cat(
-        [
-            torch.pow(x1, 2),
-            torch.pow(x2, 4),
-            torch.pow(x3, 6),
-            torch.pow(x4, 8),
-        ],
+        [torch.pow(x1, 2), torch.pow(x2, 4), torch.pow(x3, 6), torch.pow(x4, 8),],
         dim=1,
     )
 
@@ -490,13 +472,7 @@ def even_poly4_der(x):
         x[:, :h],
         x[:, h:],
     )
-    return torch.cat(
-        [
-            2 * x1,
-            4 * torch.pow(x2, 3),
-        ],
-        dim=1,
-    )
+    return torch.cat([2 * x1, 4 * torch.pow(x2, 3),], dim=1,)
 
 
 def even_poly6_der(x):
@@ -506,14 +482,7 @@ def even_poly6_der(x):
         x[:, h : 2 * h],
         x[:, 2 * h :],
     )
-    return torch.cat(
-        [
-            2 * x1,
-            4 * torch.pow(x2, 3),
-            6 * torch.pow(x3, 5),
-        ],
-        dim=1,
-    )
+    return torch.cat([2 * x1, 4 * torch.pow(x2, 3), 6 * torch.pow(x3, 5),], dim=1,)
 
 
 def even_poly8_der(x):
@@ -525,12 +494,7 @@ def even_poly8_der(x):
         x[:, 3 * h :],
     )
     return torch.cat(
-        [
-            2 * x1,
-            4 * torch.pow(x2, 3),
-            6 * torch.pow(x3, 5),
-            8 * torch.pow(x4, 7),
-        ],
+        [2 * x1, 4 * torch.pow(x2, 3), 6 * torch.pow(x3, 5), 8 * torch.pow(x4, 7),],
         dim=1,
     )
 

@@ -69,7 +69,7 @@ def n_dim_sphere_init_data(centre, radius, batch_size, on_border=False):
     u = torch.randn(
         batch_size, dim
     )  # an array of d normally distributed random variables
-    norm = torch.sum(u**2, dim=1) ** (0.5)
+    norm = torch.sum(u ** 2, dim=1) ** (0.5)
     if on_border:
         r = radius * torch.ones(batch_size, dim) ** (1.0 / dim)
     else:

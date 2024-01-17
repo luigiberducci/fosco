@@ -5,13 +5,7 @@ from matplotlib import cm
 
 
 def benchmark_3d(
-    func,
-    domains,
-    levels: list[float],
-    xrange,
-    yrange,
-    title: str = "",
-    fig=None,
+    func, domains, levels: list[float], xrange, yrange, title: str = "", fig=None,
 ):
     if fig is None:
         fig = plt.gcf()
@@ -57,13 +51,7 @@ def certificate_surface(
     ax.plot_surface(X, Y, Z, cmap=cm.coolwarm, alpha=0.7, rstride=5, cstride=5)
     levels.sort()
     ax.contour(
-        X,
-        Y,
-        Z,
-        levels=levels,
-        colors="k",
-        linestyles="dashed",
-        linewidths=2.5,
+        X, Y, Z, levels=levels, colors="k", linestyles="dashed", linewidths=2.5,
     )
     return ax
 
