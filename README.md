@@ -5,7 +5,7 @@ FOSCo: FOrmal Synthesis of COntrol Barrier Functions
 <p align="center">
 <a href="https://opensource.org/license/bsd-3-clause/"><img alt="License" src="https://img.shields.io/badge/License-BSD_3--Clause-blue.svg"></a>
 <a href="https://python.org"><img alt="Python 3.10" src="https://img.shields.io/badge/python-3.10-blue.svg"></a>
-<a href="https://github.com/luigiberducci/fosco/actions/workflows/tests-on-push.yml/badge.svg"><img alt="Workflow Status" src="https://github.com/luigiberducci/fosco/actions/workflows/tests-on-push.yml/badge.svg"></a>
+<a href="https://github.com/luigiberducci/fosco/actions/workflows/tests_on_push.yml/badge.svg"><img alt="Workflow Status" src="https://github.com/luigiberducci/fosco/actions/workflows/tests_on_push.yml/badge.svg"></a>
 <a href="https://github.com/psf/black"><img alt="Code style: black" src="https://img.shields.io/badge/code%20style-black-000000.svg"></a>
 </p>
 
